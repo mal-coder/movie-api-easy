@@ -4,13 +4,13 @@ from xml.etree import ElementTree
 import requests
 from flask_restful import Resource, abort
 
-from app.security.authentication import validate_token
+from app.security.authentication import authenticate_token
 from app.config import xml_api_uri, xml_attributes, painless
-from app.helpers.request_parser import parser
+from app.validation.request_parser import parser
 
 
 class InforApi(Resource):
-    @validate_token
+    @authenticate_token
     def get(self):
         title = parser.parse_args().get('title', None)
         try:

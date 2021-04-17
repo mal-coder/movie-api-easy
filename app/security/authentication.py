@@ -1,11 +1,11 @@
 from flask_restful import abort
 
 from app.config import api_key
-from app.helpers.request_parser import parser
+from app.validation.request_parser import parser
 
 
-def validate_token(func):
-    def validation(*args, **kwargs):
+def authenticate_token(func):
+    def wrapper(*args, **kwargs):
         token = parser.parse_args().get('Authorization')
         split_token = token.split()
         if not token or len(split_token) != 2 or split_token[0].lower() != 'bearer':
@@ -14,4 +14,4 @@ def validate_token(func):
             abort(401, message='Authorization token is incorrect')
         return func(*args, **kwargs)
 
-    return validation
+    return wrapper
