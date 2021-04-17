@@ -7,3 +7,4 @@ api_key = environ['API_KEY']
 xml_attributes = json.loads(environ['XML_ATTRIBUTES'])
 port = environ['PORT']
 host = environ['HOST']
+parameter = environ.get('QUERY_PARAMETER', 'title')

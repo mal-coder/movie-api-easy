@@ -4,15 +4,15 @@ from xml.etree import ElementTree
 import requests
 from flask_restful import Resource, abort
 
+from app.config import xml_api_uri, xml_attributes, painless, parameter
 from app.security.authentication import authenticate_token
-from app.config import xml_api_uri, xml_attributes, painless
 from app.validation.request_parser import parser
 
 
-class InforApi(Resource):
+class MovieEndpoint(Resource):
     @authenticate_token
     def get(self):
-        title = parser.parse_args().get('title', None)
+        title = parser.parse_args().get(parameter, None)
         try:
             url = f'{xml_api_uri}&t={title}'
             response = requests.get(url)
@@ -35,9 +35,12 @@ class InforApi(Resource):
                     movie_data[attr] = content[vale_lindex:value_rindex]
                 return movie_data
 
-        except requests.HTTPError as e:
-            logging.error(f'HTTPError: {str(e)}')
-            abort(500, message=str(e))
+        except requests.HTTPError:
+            logging.exception("Error while processing request")
+            message = "Error while processing request"
+            if response.text:
+                message = response.text
+            abort(500, message=message)
         except Exception:
             logging.exception("Error while processing request")
             abort(500, message=f'Unknown server error')
