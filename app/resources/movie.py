@@ -3,8 +3,9 @@ from xml.etree import ElementTree
 
 import requests
 from flask_restful import Resource, abort
+from werkzeug.exceptions import NotFound
 
-from app.config import xml_api_uri, xml_attributes, painless, parameter
+from app.config import xml_api_uri, xml_attributes, painless, parameter, xml_query_parameter
 from app.security.authentication import authenticate_token
 from app.validation.request_parser import parser
 
@@ -14,7 +15,7 @@ class MovieEndpoint(Resource):
     def get(self):
         title = parser.parse_args().get(parameter, None)
         try:
-            url = f'{xml_api_uri}&t={title}'
+            url = f'{xml_api_uri}&{xml_query_parameter}={title}'
             response = requests.get(url)
             response.raise_for_status()
 
@@ -27,6 +28,8 @@ class MovieEndpoint(Resource):
                         return child.attrib
             else:
                 content = response.text
+                if '<error>Movie not found!</error>' in content:
+                    abort(404, message='Movie not found!')
                 movie_data = dict()
                 for attr in xml_attributes:
                     attr_lindex = content.find(attr)
@@ -41,6 +44,8 @@ class MovieEndpoint(Resource):
             if response.text:
                 message = response.text
             abort(500, message=message)
+        except NotFound:
+            raise
         except Exception:
             logging.exception("Error while processing request")
             abort(500, message=f'Unknown server error')
