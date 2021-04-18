@@ -7,5 +7,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - XML_API_URI=https://www.omdbapi.com/?r=xml&apikey=cc63c6fd
+      - XML_API_URI=https://www.omdbapi.com/?r=xml&apikey=
       - API_KEY=d1b9c69a-ec83-4bf4-9fac-c36ce4af47da
+      - PORT=5000
+      - HOST=0.0.0.0
