@@ -1,32 +1,36 @@
 import logging
+from urllib.request import urlopen
+from http.client import HTTPException
 from xml.etree import ElementTree
 
-import requests
 from flask_restful import Resource, abort
+from werkzeug.exceptions import NotFound
 
-from app.security.authentication import validate_token
-from app.config import xml_api_uri, xml_attributes, painless
-from app.helpers.request_parser import parser
+from app.config import xml_api_uri, xml_attributes, painless, parameter, xml_query_parameter
+from app.security.authentication import authenticate_token
+from app.validation.request_parser import parser
 
 
-class InforApi(Resource):
-    @validate_token
+class MovieEndpoint(Resource):
+    @authenticate_token
     def get(self):
-        title = parser.parse_args().get('title', None)
+        title = parser.parse_args().get(parameter, None)
         try:
-            url = f'{xml_api_uri}&t={title}'
-            response = requests.get(url)
-            response.raise_for_status()
+            url = f'{xml_api_uri}&{xml_query_parameter}={title}'
+            with urlopen(url) as request:
+                response = request.read()
 
             if painless:
-                xml_response = ElementTree.fromstring(response.content)
+                xml_response = ElementTree.fromstring(response)
                 for child in xml_response:
                     if child.text == 'Movie not found!':
                         abort(404, message=child.text)
                     elif child.tag == 'movie':
                         return child.attrib
             else:
-                content = response.text
+                content = str(response, 'utf-8')
+                if '<error>Movie not found!</error>' in content:
+                    abort(404, message='Movie not found!')
                 movie_data = dict()
                 for attr in xml_attributes:
                     attr_lindex = content.find(attr)
@@ -35,9 +39,14 @@ class InforApi(Resource):
                     movie_data[attr] = content[vale_lindex:value_rindex]
                 return movie_data
 
-        except requests.HTTPError as e:
-            logging.error(f'HTTPError: {str(e)}')
-            abort(500, message=str(e))
+        except HTTPException:
+            logging.exception("Error while processing request")
+            message = "Error while processing request"
+            if response.text:
+                message = response.text
+            abort(500, message=message)
+        except NotFound:
+            raise
         except Exception:
             logging.exception("Error while processing request")
             abort(500, message=f'Unknown server error')
