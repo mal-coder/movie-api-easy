@@ -18,10 +18,10 @@ jobs:
       - name: Install dependencies
         run: |
           pip install pipenv
-          pipenv install
+          pipenv install --dev
       - name: Run tests
         env:
           XML_API_URI: ${{ secrets.XML_API_URI }}
           API_KEY: ${{ secrets.API_KEY }}
         run: |
-          pytest
+          pipenv run pytest
