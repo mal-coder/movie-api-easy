@@ -42,8 +42,6 @@ class MovieEndpoint(Resource):
         except HTTPException:
             logging.exception("Error while processing request")
             message = "Error while processing request"
-            if response.text:
-                message = response.text
             abort(500, message=message)
         except NotFound:
             raise
