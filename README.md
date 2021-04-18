@@ -4,7 +4,7 @@ Simple REST API allowing requesting information about movies (but not necessaril
 
 
 With default configuration the user requests using the API's */* endpoint with query parameter *title=<movie title>*.
-Requests is authenticated with *Bearer token* provided by the user in *Authentication* header.
+Requests is authenticated with *Bearer token* provided by the user in *Authorization* header.
 API queries for the title in the OMDB (https://www.omdbapi.com/). Converts the response answer from XML to JSON and 
 returns it to the user.  
 
@@ -17,7 +17,8 @@ optionally:
 * Docker
 
 optionally^2: 
-*https://movie-api-infor.herokuapp.com?title=<movie title>
+* https://movie-api-infor.herokuapp.com?title=<movie title>
+** Remember to use *Authorization* header with token: `Bearer 1b9c69a-ec83-4bf4-9fac-c36ce4af47da`
 
 ## Installing Movie API
 
@@ -28,7 +29,7 @@ $ pipenv install
 ```
 Create the following environmental variables:
 ```
-XML_API_URI=https://www.omdbapi.com/?r=xml&apikey=<your api key> - tagert server address with 
+XML_API_URI=https://www.omdbapi.com/?r=xml&apikey=<your api key> - tagert server address with
 API_KEY=<applications key>
 ```
 Optionally it is possible override additional settings:
@@ -104,6 +105,7 @@ To test Movie API run:
 ```
 docker-compose run task2-api sh -c "pytest tests"
 ```
+**Remember to update *docker-compose* XML_API_URI with your OMDB api key.
 
 ### Additional information
 The application uses Flask framework with Flask-RESTful extension. 
