@@ -9,6 +9,7 @@ If the logic will be extending move it to separate functions
 """
 
 import logging
+from http.client import InvalidURL
 from urllib.error import URLError
 from urllib.request import urlopen
 from xml.etree import ElementTree
@@ -59,6 +60,8 @@ class MovieEndpoint(Resource):
             logging.exception("Error while processing the request")
             message = "Error while processing request"
             abort(500, message=message)
+        except InvalidURL as e:
+            raise BadRequest from e
         except NotFound:
             raise
         except BadRequest:

@@ -32,7 +32,7 @@ To install File system API, follow these steps:
 ```
 $ pipenv install
 ```
-Create the following environmental variables:
+Create the following environmental variables or edit them in *docker-compose.yml*:
 ```
 XML_API_URI=https://www.omdbapi.com/?r=xml&apikey=<your api key> - tagert server address with
 API_KEY=<applications key>
