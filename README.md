@@ -18,7 +18,12 @@ optionally:
 
 optionally^2: 
 * https://movie-api-infor.herokuapp.com?title=<movie title>
-** Remember to use *Authorization* header with token: `Bearer 1b9c69a-ec83-4bf4-9fac-c36ce4af47da`
+** Remember to use *Authorization* header with token: `Bearer d1b9c69a-ec83-4bf4-9fac-c36ce4af47da`
+
+If you don't know or are unable to process the request in any other way you can use:
+`
+https://reqbin.com/
+`
 
 ## Installing Movie API
 
