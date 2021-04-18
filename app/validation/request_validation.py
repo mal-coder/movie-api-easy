@@ -12,7 +12,7 @@ from app.config import parameter
 def validate_request(func):
     def wrapper(*args):
         # Retrieve Authorization header and query parameter
-        req_token = request.headers.get('Authorization').strip()
+        req_token = request.headers.get('Authorization')
         req_parameter = request.args.get(parameter)
         # Clean from trailing and leading blanks
         req_token = req_token.strip() if req_token else req_token

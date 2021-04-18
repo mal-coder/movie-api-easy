@@ -38,7 +38,7 @@ def test_validation_query_parameter_missing(client):
     response = client.get(path=path, headers=headers)
 
     assert response.status_code == 400
-    assert b'Missing required parameter in the query string' in response.data
+    assert b'Required query parameter \'title\' is missing or empty"' in response.data
 
 
 def test_get_movie_success(client):
@@ -60,3 +60,20 @@ def test_get_movie_not_found(client):
     response = client.get(path=path + query_parameters, headers=headers)
 
     assert response.status_code == 404
+
+
+def test_query_parameter_empty(client):
+    headers = {'Authorization': f'Bearer {api_key}'}
+    query_parameters = f'?{parameter}='
+    path = '/'
+    response = client.get(path=path + query_parameters, headers=headers)
+
+    assert response.status_code == 400
+
+
+def test_authorization_header_missing(client):
+    query_parameters = f'?{parameter}=Lost'
+    path = '/'
+    response = client.get(path=path + query_parameters)
+
+    assert response.status_code == 400

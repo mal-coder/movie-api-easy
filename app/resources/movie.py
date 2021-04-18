@@ -9,8 +9,8 @@ If the logic will be extending move it to separate functions
 """
 
 import logging
-from urllib.request import urlopen
 from urllib.error import URLError
+from urllib.request import urlopen
 from xml.etree import ElementTree
 
 from flask_restful import Resource, abort
