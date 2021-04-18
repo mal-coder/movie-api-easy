@@ -1,0 +1,26 @@
+name: Test Movie API after push to master
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  workflow_dispatch:
+jobs:
+  test:
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Install dependencies
+        run: |
+          pip install pipenv
+          pipenv install
+      - name: Run tests
+        env:
+          XML_API_URI: ${{ secrets.XML_API_URI }}
+          API_KEY: ${{ secrets.API_KEY }}
+        run: |
+          pytest
