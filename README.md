@@ -52,7 +52,11 @@ To use Movie API simply start it with:
 ```
 python run.py 
 ```
-Or use the provided `docker-compose.yml`. 
+Or use the provided `docker-compose.yml`:
+```
+docker-compose build
+docker-compose up
+```
 
 The API has only one endpoint `/`.
 Endpoint's description for default settings:
