@@ -1,7 +1,8 @@
 import logging
+from urllib.request import urlopen
+from http.client import HTTPException
 from xml.etree import ElementTree
 
-import requests
 from flask_restful import Resource, abort
 from werkzeug.exceptions import NotFound
 
@@ -16,18 +17,18 @@ class MovieEndpoint(Resource):
         title = parser.parse_args().get(parameter, None)
         try:
             url = f'{xml_api_uri}&{xml_query_parameter}={title}'
-            response = requests.get(url)
-            response.raise_for_status()
+            with urlopen(url) as request:
+                response = request.read()
 
             if painless:
-                xml_response = ElementTree.fromstring(response.content)
+                xml_response = ElementTree.fromstring(response)
                 for child in xml_response:
                     if child.text == 'Movie not found!':
                         abort(404, message=child.text)
                     elif child.tag == 'movie':
                         return child.attrib
             else:
-                content = response.text
+                content = str(response, 'utf-8')
                 if '<error>Movie not found!</error>' in content:
                     abort(404, message='Movie not found!')
                 movie_data = dict()
@@ -38,7 +39,7 @@ class MovieEndpoint(Resource):
                     movie_data[attr] = content[vale_lindex:value_rindex]
                 return movie_data
 
-        except requests.HTTPError:
+        except HTTPException:
             logging.exception("Error while processing request")
             message = "Error while processing request"
             if response.text:
