@@ -97,9 +97,11 @@ paths:
                           "imdbID": "tt0411008",
                           "type": "series"}
         "400":
-          description: "Request validation error"
+          description: "Bad request"
         "401":
           description: "Token validation error"
+        "404":
+          description: "Movie not found"
         "500":
           description: "Server Error"
 ```
