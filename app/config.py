@@ -1,3 +1,7 @@
+"""
+Module containing retrieved environmental variables and default configuration
+"""
+
 import json
 from os import environ
 

@@ -113,7 +113,8 @@ docker-compose run task2-api sh -c "pytest tests"
 **Remember to update *docker-compose* XML_API_URI with your OMDB api key.
 
 ### Additional information
-The application uses Flask framework with Flask-RESTful extension. 
+The application uses Flask framework with Flask-RESTful extension and Gunicorn WSGI server for deployment in 
+production.
 
 The reason to for using a framework it is to facilitate the very creation of the API and later on it's maintenance and
  possible extension.
@@ -126,5 +127,3 @@ Besides using the aforementioned framework the application uses Python standard 
 *urllib.request* for handling requests and responses from target server and optionally *xml.etree*.
 The *xml.etree* is not used actively - it's usage has to be enabled in the *config.py* file. 
 By default all XML parsing is done "manually". 
-
-

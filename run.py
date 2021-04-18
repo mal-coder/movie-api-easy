@@ -1,3 +1,7 @@
+"""
+Module for simplifying running the application
+"""
+
 from app import main, config
 
 application = main.get_app()
