@@ -32,8 +32,8 @@ $ pipenv install
 ```
 Create the following environmental variables or edit them in *docker-compose.yml*:
 ```
-XML_API_URI=https://www.omdbapi.com/?r=xml&apikey=<your api key> - tagert server address with
-API_KEY=<applications key>
+XML_API_URI=https://www.omdbapi.com/?r=xml&apikey=<your api key> - tagert server address !! remeber to update your API key
+API_KEY=<applications key> - this is the key you'll be providing with the Authorization header
 ```
 Optionally it is possible override additional settings:
 ```
@@ -55,16 +55,21 @@ Or use the provided `docker-compose.yml`:
 docker-compose build
 docker-compose up
 ```
-For both the default URL address is:
+For local deployment the default URL address is:
 `http://0.0.0.0:5000/?title={movie title}`
 
-Or, if you don't know how or you're unable to make a request with *curl*, *Postman* you can use:
-* https://movie-api-infor.herokuapp.com?title={movie title}
-** Remember to use *Authorization* header with token: `Bearer d1b9c69a-ec83-4bf4-9fac-c36ce4af47da`
+For heroku the URL address is:
+* `https://movie-api-infor.herokuapp.com?title={movie title}` 
+
+If you don't know how or you're unable to make a request with *curl*, *Postman* you can use the heroku de:
 
 `
 https://reqbin.com/
 `
+
+** Remember to use *Authorization* header with token: `Bearer d1b9c69a-ec83-4bf4-9fac-c36ce4af47da`
+
+
 
 The API has only one endpoint `/` and accepts `GET` request only.
 Endpoint's description for default settings:
@@ -133,7 +138,7 @@ production.
 The reason for using a framework is to facilitate the very creation of the API and later on it's maintenance and
  possible extension.
  
-By taking the advantage of working, richly documented, constantly updated solutions which are supported by a huge 
+By taking the advantage of working, secure, richly documented, constantly updated solutions which are supported by a huge 
 community we can focus on the very core of our tasks - creating the part of the application containing logic for the 
 business objectives and delivering reliable solutions faster.
 
