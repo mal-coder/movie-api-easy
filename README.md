@@ -3,9 +3,9 @@
 Simple REST API allowing requesting information about movies (but not necessarily limited to that).
 
 
-With default configuration the user requests using the API's */* endpoint with query parameter *title=<movie title>*.
+With default configuration the user makes his requests using the API's **/** endpoint with query parameter *title={movie title}*.
 Requests is authenticated with *Bearer token* provided by the user in *Authorization* header.
-API queries for the title in the OMDB (https://www.omdbapi.com/). Converts the response answer from XML to JSON and 
+API queries for the title in the OMDB (https://www.omdbapi.com/), converts the response answer from XML to JSON and 
 returns it to the user.  
 
 ## Prerequisites
@@ -16,14 +16,12 @@ returns it to the user.
 optionally: 
 * Docker
 
-optionally^2: 
-* https://movie-api-infor.herokuapp.com?title=<movie title>
-** Remember to use *Authorization* header with token: `Bearer d1b9c69a-ec83-4bf4-9fac-c36ce4af47da`
+optionally^2:
+* The API is deployed to Heroku on:
+```
+https://movie-api-infor.herokuapp.com?title={movie title}
+```
 
-If you don't know or are unable to process the request in any other way you can use:
-`
-https://reqbin.com/
-`
 
 ## Installing Movie API
 
@@ -57,8 +55,18 @@ Or use the provided `docker-compose.yml`:
 docker-compose build
 docker-compose up
 ```
+For both the default URL address is:
+`http://0.0.0.0:5000/?title={movie title}`
 
-The API has only one endpoint `/`.
+Or, if you don't know how or you're unable to make a request with *curl*, *Postman* you can use:
+* https://movie-api-infor.herokuapp.com?title={movie title}
+** Remember to use *Authorization* header with token: `Bearer d1b9c69a-ec83-4bf4-9fac-c36ce4af47da`
+
+`
+https://reqbin.com/
+`
+
+The API has only one endpoint `/` and accepts `GET` request only.
 Endpoint's description for default settings:
 ```
 security:
@@ -122,7 +130,7 @@ docker-compose run task2-api sh -c "pytest tests"
 The application uses Flask framework with Flask-RESTful extension and Gunicorn WSGI server for deployment in 
 production.
 
-The reason to for using a framework it is to facilitate the very creation of the API and later on it's maintenance and
+The reason for using a framework is to facilitate the very creation of the API and later on it's maintenance and
  possible extension.
  
 By taking the advantage of working, richly documented, constantly updated solutions which are supported by a huge 
